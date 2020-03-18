@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Covid19TempRecordApp";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Covid19TempRecordApp Sample</h1>
+        <h2>今日の体温入力</h2>
+        <hr width="80%" />
+
+        @if (Model.UIMsg != null)
+        {
+            <h3>@Model.UIMsg</h3>
+        }
+
+        @if (Model.UserEntities == null)
+        {
+            <form asp-action="Post">
+                学年、クラス <select name="ClassId" asp-items="Model.ClassIds"></select><br />
+                出席番号 <select name="StudentId" asp-items="Model.StudentIds"></select><br />
+                今日の体温 <input type="text" name="Temperature" /> ℃<br />
+                メモ <input type="text" name="Memo" /><br />
+                <input type="submit" />
+            </form>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>体温</th>
+                        <th>メモ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserEntities)
+                    {
+                        <tr>
+                            <td>@item.PartitionKey.Substring(0, 4)/@item.PartitionKey.Substring(4, 2)/@item.PartitionKey.Substring(6,2)</td>
+                            <td>@item.Temperature.ToString("00.0")</td>
+                            <td>@item.Memo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+
+        <hr width="80%" />
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
